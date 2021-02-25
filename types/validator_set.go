@@ -705,11 +705,21 @@ func (vals *ValidatorSet) VerifyCommit(chainID string, blockID BlockID,
 			}
 		}
 		if !bv.Verify() {
+			talliedVotingPower = 0
 			for idx, commitSig := range commit.Signatures {
+				if commitSig.Absent() {
+					continue // OK, some signatures can be absent.
+				}
+
 				val := vals.Validators[idx]
 				voteSignBytes := commit.VoteSignBytes(chainID, int32(idx))
 				if !val.PubKey.VerifySignature(voteSignBytes, commitSig.Signature) {
 					return fmt.Errorf("wrong signature (#%d): %X", idx, commitSig.Signature)
+				}
+
+				// Good!
+				if commitSig.ForBlock() {
+					talliedVotingPower += val.VotingPower
 				}
 			}
 		}
