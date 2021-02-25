@@ -1710,6 +1710,30 @@ func BenchmarkUpdates(b *testing.B) {
 	}
 }
 
+func BenchmarkValidatorSet_VerifyCommit(b *testing.B) {
+	for _, n := range []int{1, 8, 64, 1024} {
+		n := n
+		var (
+			chainID = "test_chain_id"
+			h       = int64(3)
+			blockID = makeBlockIDRandom()
+		)
+		b.Run(fmt.Sprint(n), func(b *testing.B) {
+			b.ReportAllocs()
+			// generate n validators
+			voteSet, valSet, vals := randVoteSet(h, 0, tmproto.PrecommitType, n, int64(n*5))
+			// create a commit with n validators
+			commit, err := MakeCommit(blockID, h, 0, voteSet, vals, time.Now())
+			require.NoError(b, err)
+
+			for i := 0; i < b.N/n; i++ {
+				err = valSet.VerifyCommit(chainID, blockID, h, commit)
+				assert.NoError(b, err)
+			}
+		})
+	}
+}
+
 func BenchmarkValidatorSet_VerifyCommitLight(b *testing.B) {
 	for _, n := range []int{1, 8, 64, 1024} {
 		n := n
