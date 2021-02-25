@@ -1710,7 +1710,7 @@ func BenchmarkUpdates(b *testing.B) {
 	}
 }
 
-func BenchmarkValidatorSet_VerifyCommit(b *testing.B) {
+func BenchmarkValidatorSet_VerifyCommit_Ed25519(b *testing.B) {
 	for _, n := range []int{1, 8, 64, 1024} {
 		n := n
 		var (
@@ -1734,7 +1734,7 @@ func BenchmarkValidatorSet_VerifyCommit(b *testing.B) {
 	}
 }
 
-func BenchmarkValidatorSet_VerifyCommitLight(b *testing.B) {
+func BenchmarkValidatorSet_VerifyCommitLight_Ed25519(b *testing.B) {
 	for _, n := range []int{1, 8, 64, 1024} {
 		n := n
 		var (
@@ -1758,7 +1758,7 @@ func BenchmarkValidatorSet_VerifyCommitLight(b *testing.B) {
 	}
 }
 
-func BenchmarkValidatorSet_VerifyCommitLightTrusting(b *testing.B) {
+func BenchmarkValidatorSet_VerifyCommitLightTrusting_Ed25519(b *testing.B) {
 	for _, n := range []int{1, 8, 64, 1024} {
 		n := n
 		var (
