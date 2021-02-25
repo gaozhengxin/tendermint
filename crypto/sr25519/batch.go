@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	schnorrkel "github.com/ChainSafe/go-schnorrkel"
+
 	"github.com/tendermint/tendermint/crypto"
 )
 
